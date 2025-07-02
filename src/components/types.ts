@@ -36,3 +36,7 @@ export type JarViewProps = {
   selectedFruits: Fruit[];
   quantities: Record<number,number>;
 }
+
+export type JarPieChartProps = {
+  data: Record<string, number>;
+};
