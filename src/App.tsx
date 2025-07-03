@@ -86,7 +86,7 @@ function App() {
       <VStack spacing={2} minW="100%" minH="100%">
         <HStack spacing={2}>
           <Heading color="#19456B" flex={1}>
-            Fruity Jar
+            Fruity Jar - Project
           </Heading>
           <Apple size="24" />
         </HStack>
