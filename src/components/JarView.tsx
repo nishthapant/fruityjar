@@ -55,7 +55,15 @@ const JarView: React.FC<JarViewProps> = ({ selectedFruits, quantities }) => {
         </Box>
         <Box flex={1} {...style.chart}>
           {Object.keys(pieChartData).length > 0 ? (
-            <JarPieChart data={pieChartData} />
+            <Box
+              flex={1.7}
+              w="100%"
+              display="flex"
+              justifyContent="center"
+              pb={4}
+            >
+              <JarPieChart data={pieChartData} />
+            </Box>
           ) : (
             <Text>Add fruits to view chart</Text>
           )}
