@@ -50,26 +50,37 @@ function App() {
   };
 
   useEffect(() => {
-    console.log("IN THE APP");
     const fetchAllFruits = async () => {
-      try {
-        const response = await fetch("/api/fruity");
-        console.log("RESPONSE - ", response);
-        const data = await response.json();
+      const maxRetries = 3;
+      let attempt = 0;
+      while (attempt < maxRetries) {
+        try {
+          const response = await fetch("/api/fruity");
+          if (!response.ok) {
+            console.warn(
+              `Attempt ${attempt + 1} failed with status: ${response.status}`
+            );
+            attempt++;
+            continue;
+          }
 
-        setFruits(data);
+          const data = await response.json();
 
-        const initialQuantity: Record<number, number> = {};
+          setFruits(data);
 
-        data.forEach((fruit: Fruit) => {
-          initialQuantity[fruit.id] = 0;
-        });
+          const initialQuantity: Record<number, number> = {};
 
-        setQuantities(initialQuantity);
-      } catch (error: any) {
-        console.error("Fetch failed: ", error);
-      } finally {
-        setIsLoading(false);
+          data.forEach((fruit: Fruit) => {
+            initialQuantity[fruit.id] = 0;
+          });
+
+          setQuantities(initialQuantity);
+          setIsLoading(false);
+          return;
+        } catch (error: any) {
+          console.error("Fetch failed: ", error);
+          attempt++;
+        }
       }
     };
     fetchAllFruits();
@@ -84,7 +95,6 @@ function App() {
 
   return (
     <Container {...style.outerContainer}>
-      <Heading>HELLLOOOO WORLDDDDDD</Heading>
       <VStack spacing={2} minW="100%" minH="100%">
         <HStack spacing={2}>
           <Heading color="#19456B" flex={1}>
