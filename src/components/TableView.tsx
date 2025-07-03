@@ -1,5 +1,5 @@
-import type { GroupedFruitsProps } from "./types";
-import { Box, Heading, Text, HStack, VStack, Button } from "@chakra-ui/react";
+import type { GroupedFruitsProps, Fruit } from "./types";
+import { Box, Heading, HStack, VStack, Button } from "@chakra-ui/react";
 import { Collapsible } from "@ark-ui/react";
 import { useEffect, useState } from "react";
 import { style } from "../styles/TableView.styles";
@@ -9,7 +9,6 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -40,6 +39,12 @@ const TableView: React.FC<GroupedFruitsProps> = ({
     onQuantityChange("decrease", fruitId);
   };
 
+  const handleAddAll = (fruits: Fruit[]) => {
+    fruits.forEach((fruit) => {
+      return handleQuantityIncrement(fruit.id);
+    });
+  };
+
   return (
     <>
       {isGrouped && (
@@ -50,12 +55,39 @@ const TableView: React.FC<GroupedFruitsProps> = ({
                 <VStack {...style.collapsibleGroup}>
                   <Collapsible.Root>
                     <Collapsible.Trigger asChild>
-                      <HStack>
-                        <ChevronDownIcon />
-                        <Heading {...style.collapsibleHeading}>{group}</Heading>
+                      <HStack spacing={3}>
+                        <Box
+                          flex={0.2}
+                          display="flex"
+                          justifyContent="flex-start"
+                          pl={2}
+                        >
+                          <ChevronDownIcon />
+                        </Box>
+                        <Box
+                          flex={1}
+                          display="flex"
+                          justifyContent="flex-start"
+                        >
+                          <Heading {...style.collapsibleHeading}>
+                            {group}
+                          </Heading>
+                        </Box>
+                        <Box
+                          flex={1}
+                          display="flex"
+                          justifyContent="flex-end"
+                          pr={2}
+                        >
+                          <Button
+                            {...style.addButton}
+                            onClick={() => handleAddAll(fruits)}
+                          >
+                            Add all
+                          </Button>
+                        </Box>
                       </HStack>
                     </Collapsible.Trigger>
-                    {/* <Button>Add All</Button> */}
                     <Collapsible.Content>
                       <TableContainer>
                         <Table variant="striped" colorScheme="gray">

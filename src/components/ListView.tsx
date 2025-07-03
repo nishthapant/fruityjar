@@ -1,8 +1,7 @@
-import type { GroupedFruitsProps } from "./types";
+import type { GroupedFruitsProps, Fruit } from "./types";
 import {
   Box,
   Heading,
-  Text,
   HStack,
   VStack,
   Button,
@@ -37,6 +36,12 @@ const ListView: React.FC<GroupedFruitsProps> = ({
     onQuantityChange("decrease", fruitId);
   };
 
+  const handleAddAll = (fruits: Fruit[]) => {
+    fruits.forEach((fruit) => {
+      return handleQuantityIncrement(fruit.id);
+    });
+  };
+
   return (
     <>
       {isGrouped && (
@@ -47,9 +52,37 @@ const ListView: React.FC<GroupedFruitsProps> = ({
                 <VStack {...style.collapsibleGroup}>
                   <Collapsible.Root>
                     <Collapsible.Trigger asChild>
-                      <HStack>
-                        <ChevronDownIcon />
-                        <Heading {...style.collapsibleHeading}>{group}</Heading>
+                      <HStack spacing={3}>
+                        <Box
+                          flex={0.2}
+                          display="flex"
+                          justifyContent="flex-start"
+                          pl={2}
+                        >
+                          <ChevronDownIcon />
+                        </Box>
+                        <Box
+                          flex={1}
+                          display="flex"
+                          justifyContent="flex-start"
+                        >
+                          <Heading {...style.collapsibleHeading}>
+                            {group}
+                          </Heading>
+                        </Box>
+                        <Box
+                          flex={1}
+                          display="flex"
+                          justifyContent="flex-end"
+                          pr={2}
+                        >
+                          <Button
+                            {...style.addButton}
+                            onClick={() => handleAddAll(fruits)}
+                          >
+                            Add all
+                          </Button>
+                        </Box>
                       </HStack>
                     </Collapsible.Trigger>
                     <Collapsible.Content>
