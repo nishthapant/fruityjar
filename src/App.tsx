@@ -51,36 +51,31 @@ function App() {
 
   useEffect(() => {
     const fetchAllFruits = async () => {
-      const maxRetries = 3;
-      let attempt = 0;
-      while (attempt < maxRetries) {
-        try {
-          const response = await fetch("/api/fruity");
-          if (!response.ok) {
-            console.warn(
-              `Attempt ${attempt + 1} failed with status: ${response.status}`
-            );
-            attempt++;
-            continue;
+      try {
+        const response = await fetch(
+          "https://fruity-proxy.vercel.app/api/fruits",
+          {
+            headers: {
+              "x-api-key": "fruit-api-challenge-2025",
+            },
           }
+        );
 
-          const data = await response.json();
+        const data = await response.json();
 
-          setFruits(data);
+        setFruits(data);
 
-          const initialQuantity: Record<number, number> = {};
+        const initialQuantity: Record<number, number> = {};
 
-          data.forEach((fruit: Fruit) => {
-            initialQuantity[fruit.id] = 0;
-          });
+        data.forEach((fruit: Fruit) => {
+          initialQuantity[fruit.id] = 0;
+        });
 
-          setQuantities(initialQuantity);
-          setIsLoading(false);
-          return;
-        } catch (error: any) {
-          console.error("Fetch failed: ", error);
-          attempt++;
-        }
+        setQuantities(initialQuantity);
+      } catch (error: any) {
+        console.error("Fetch failed: ", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchAllFruits();
