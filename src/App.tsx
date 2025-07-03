@@ -9,7 +9,6 @@ import {
   Container,
   HStack,
   VStack,
-  Text,
   Spinner,
 } from "@chakra-ui/react";
 import type { Fruit } from "./components/types";
