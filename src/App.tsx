@@ -53,7 +53,9 @@ function App() {
     const fetchAllFruits = async () => {
       try {
         const response = await fetch("/api/fruity");
+        console.log("RESPONSE - ", response);
         const data = await response.json();
+
         setFruits(data);
 
         const initialQuantity: Record<number, number> = {};
