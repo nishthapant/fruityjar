@@ -1,6 +1,6 @@
 let cachedData = null;
 let cacheTimestamp = 0;
-const CACHE_DURATION = 1000 * 60 * 5; // 5 minutes
+const CACHE_DURATION = 1000 * 60 * 5;
 
 export default async function handler(req, res) {
   try {
