@@ -52,14 +52,15 @@ function App() {
   useEffect(() => {
     const fetchAllFruits = async () => {
       try {
-        const response = await fetch(
-          "https://fruity-proxy.vercel.app/api/fruits",
-          {
-            headers: {
-              "x-api-key": "fruit-api-challenge-2025",
-            },
-          }
-        );
+        // const response = await fetch(
+        //   "https://fruity-proxy.vercel.app/api/fruits",
+        //   {
+        //     headers: {
+        //       "x-api-key": "fruit-api-challenge-2025",
+        //     },
+        //   }
+        // );
+        const response = await fetch("/api/fruity");
 
         const data = await response.json();
 
