@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import type { Fruit } from "./components/types";
 import JarView from "./components/JarView";
+import { Apple } from "lucide-react";
 
 function App() {
   const [fruits, setFruits] = useState([]);
@@ -79,12 +80,21 @@ function App() {
   return (
     <Container {...style.outerContainer}>
       <VStack spacing={2} minW="100%" minH="100%">
-        <Heading flex={1}>Fruit Jar</Heading>
+        <HStack spacing={2}>
+          <Heading color="#19456B" flex={1}>
+            Fruity Jar
+          </Heading>
+          <Apple size="24" />
+        </HStack>
         <HStack flex={1} spacing={2} minW="100%" alignItems="stretch">
           <VStack {...style.vstack}>
             <Box display="flex" justifyContent="flex-end" w="100%" p={2}>
               <HStack spacing={2}>
-                <Box flex={1}>Filters</Box>
+                <Box flex={1}>
+                  <Heading fontSize="lg" color="#19456B">
+                    Filters:
+                  </Heading>
+                </Box>
                 <Box flex={1}>
                   <Controls onControlsChange={handleControlChange} />
                 </Box>

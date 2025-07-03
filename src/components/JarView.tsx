@@ -6,15 +6,10 @@ import { style } from "../styles/JarView.styles";
 
 const JarView: React.FC<JarViewProps> = ({ selectedFruits, quantities }) => {
   const [pieChartData, setPieChartdata] = useState<Record<string, number>>({});
-  // const [viewPieChart, setViewPieChart] = useState(false);
 
   const totalCalories = selectedFruits.reduce((sum, fruit) => {
     return sum + fruit.nutritions.calories * quantities[fruit.id];
   }, 0);
-
-  // const handlePieChartView = () => {
-  //   setViewPieChart(!viewPieChart);
-  // };
 
   useEffect(() => {
     let data: Record<string, number> = {};
@@ -27,6 +22,9 @@ const JarView: React.FC<JarViewProps> = ({ selectedFruits, quantities }) => {
   return (
     <Box {...style.outerContainer} h="100%">
       <VStack spacing={3} alignItems="stretch" h="100%">
+        <Box>
+          <Heading color="#19456B">Jar</Heading>
+        </Box>
         <Box flex={1} {...style.jar}>
           <HStack spacing={3} {...style.headingStack}>
             <Heading {...style.listHeading}>Name</Heading>
@@ -49,7 +47,7 @@ const JarView: React.FC<JarViewProps> = ({ selectedFruits, quantities }) => {
               );
             })
           ) : (
-            <Box>Jar is Empty</Box>
+            <Box>Jar is empty</Box>
           )}
         </Box>
         <Box flex={0.2} display="flex" alignItems="center" mb={1}>
