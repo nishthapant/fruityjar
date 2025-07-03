@@ -20,7 +20,7 @@ const JarView: React.FC<JarViewProps> = ({ selectedFruits, quantities }) => {
       });
       setPieChartdata(data);
     } catch (error) {
-      console.log("Error updating pie chart");
+      console.error("Error updating pie chart: ", error);
     }
   }, [selectedFruits, quantities]);
 

@@ -1,69 +1,63 @@
-# React + TypeScript + Vite
+# Fruity Jar
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Hello! Welcome to FruityJar, a React + TypeScript application built as a take-home exercise to showcase key skills in frontend development, data fetching, and UI/UX design.
 
-Currently, two official plugins are available:
+## Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This app displays a list of fruits fetched from an external API and allows users to group, view, and add fruits to a virtual jar. The jar tracks quantities and total calories and visualizes fruit calorie contributions via a pie chart.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Data Fetching
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Fetches fruit data from https://fruity-proxy.vercel.app/ with the API key "takehome".
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+Layout
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Left Section: Displays fruits either as a flat list or grouped by Family, Order, or Genus.
+- Right Section: Shows the Jar containing selected fruits, their quantities, total calories, and a pie chart visualization.
+
+Group By
+
+- User-selectable grouping: None (flat list), Family, Order, or Genus.
+- Groups display as collapsible headers with “Add all” functionality.
+
+Views
+
+- List view: Shows fruits as {name} ({calories}).
+- Table view: Shows fruits with columns: name, family, order, genus, calories.
+- Add buttons allow adding fruits individually or by group, supporting multiple quantities.
+
+Jar Functionality
+
+- Displays selected fruits and their quantities.
+- Calculates total calories dynamically.
+- Pie chart visualization of calorie breakdown.
+
+## Tech Stack
+
+- React with TypeScript
+- Vite as the build tool and development server
+- Chakra UI for styling and layout
+- React Chart.js 2 for pie charts
+- Vercel for deployment
+
+## Usage
+
+1. Clone the repo:
+
+```
+git clone https://github.com/nishtha-pant/fruityjar.git
+cd fruityjar
+npm install
+npm run dev
+
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Open your browser at `http://localhost:5173`.
+3. Use the controls to group fruits, toggle views, and add fruits to your jar.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Error Handling
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Loading spinner while fetching fruits.
+- User-friendly error messages if the API call fails.

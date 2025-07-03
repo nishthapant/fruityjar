@@ -37,7 +37,7 @@ const FruitView: React.FC<FruitViewProps> = ({
         setGroupedFruits(groups);
       }
     } catch (error) {
-      console.log("Grouping failed: ", error);
+      console.error("Grouping failed: ", error);
       setGroupedFruits({});
     }
   }, [fruits, groupBy]);
