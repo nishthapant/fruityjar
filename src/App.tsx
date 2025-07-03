@@ -14,6 +14,7 @@ import {
 import type { Fruit } from "./components/types";
 import JarView from "./components/JarView";
 import { Apple } from "lucide-react";
+import fruitsMock from "./data/fruitsMock.json";
 
 function App() {
   const [fruits, setFruits] = useState([]);
@@ -49,20 +50,34 @@ function App() {
     }
   };
 
+  const getData = async () => {
+    if (import.meta.env.MODE === "production") {
+      return fruitsMock;
+    } else {
+      try {
+        const response = await fetch(
+          "https://fruity-proxy.vercel.app/api/fruits",
+          {
+            headers: {
+              "x-api-key": "fruit-api-challenge-2025",
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch fruits");
+        }
+        return await response.json();
+      } catch (error) {
+        console.error("Failed to fetch fruits: ", error);
+        return [];
+      }
+    }
+  };
+
   useEffect(() => {
     const fetchAllFruits = async () => {
       try {
-        // const response = await fetch(
-        //   "https://fruity-proxy.vercel.app/api/fruits",
-        //   {
-        //     headers: {
-        //       "x-api-key": "fruit-api-challenge-2025",
-        //     },
-        //   }
-        // );
-        const response = await fetch("/api/fruity");
-
-        const data = await response.json();
+        const data = await getData();
 
         setFruits(data);
 
