@@ -61,3 +61,13 @@ npm run dev
 
 - Loading spinner while fetching fruits.
 - User-friendly error messages if the API call fails.
+
+## CORS Handling
+
+The original API (https://fruity-proxy.vercel.app/api/fruits) has a strict CORS policy that blocks requests from deployed applications, even when routed through a custom proxy.
+
+I attempted to create a serverless proxy endpoint in the Vercel deployment (/api/fruity) to work around the CORS restrictions. While it worked locally, the deployed proxy continued to receive a 403 Forbidden error from the upstream API due to server-level CORS enforcement.
+
+To ensure the deployed application still functions and demonstrates all required features, I fetched the fruit data once from the API and stored it in a local fruits.json file. This mock data is loaded only in production builds. The local development version still uses the live API via fetch with the proper x-api-key header.
+
+This approach preserves all intended functionalities (grouping, views, jar management, pie chart) in the deployed app while avoiding CORS issues.

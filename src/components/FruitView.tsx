@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-
 import { Box } from "@chakra-ui/react";
 import ListView from "./ListView";
 import TableView from "./TableView";

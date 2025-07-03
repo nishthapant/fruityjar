@@ -48,7 +48,7 @@ const ListView: React.FC<GroupedFruitsProps> = ({
         <Box>
           {Object.entries(groupedFruits).map(([group, fruits]) => {
             return (
-              <Box p={1}>
+              <Box mb={1}>
                 <VStack {...style.collapsibleGroup}>
                   <Collapsible.Root>
                     <Collapsible.Trigger asChild>
