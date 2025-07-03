@@ -18,22 +18,27 @@ const FruitView: React.FC<FruitViewProps> = ({
   );
 
   useEffect(() => {
-    let groups: Record<string, Fruit[]> = {};
-    const key = groupBy.toLowerCase() as GroupBySelection;
+    try {
+      const groups: Record<string, Fruit[]> = {};
+      const key = groupBy.toLowerCase() as GroupBySelection;
 
-    if (key == "none") {
-      setGroupedFruits({
-        none: [...fruits],
-      });
-    } else {
-      fruits.forEach((fruit) => {
-        const group = fruit[key];
-        if (!groups[group]) {
-          groups[group] = [];
-        }
-        groups[group].push(fruit);
-      });
-      setGroupedFruits(groups);
+      if (key == "none") {
+        setGroupedFruits({
+          none: [...fruits],
+        });
+      } else {
+        fruits.forEach((fruit) => {
+          const group = fruit[key];
+          if (!groups[group]) {
+            groups[group] = [];
+          }
+          groups[group].push(fruit);
+        });
+        setGroupedFruits(groups);
+      }
+    } catch (error) {
+      console.log("Grouping failed: ", error);
+      setGroupedFruits({});
     }
   }, [fruits, groupBy]);
 

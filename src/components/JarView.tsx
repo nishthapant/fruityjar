@@ -8,15 +8,20 @@ const JarView: React.FC<JarViewProps> = ({ selectedFruits, quantities }) => {
   const [pieChartData, setPieChartdata] = useState<Record<string, number>>({});
 
   const totalCalories = selectedFruits.reduce((sum, fruit) => {
-    return sum + fruit.nutritions.calories * quantities[fruit.id];
+    const qty = quantities[fruit.id] ?? 0;
+    return sum + fruit.nutritions.calories * qty;
   }, 0);
 
   useEffect(() => {
-    let data: Record<string, number> = {};
-    selectedFruits.forEach((fruit) => {
-      data[fruit.name] = fruit.nutritions.calories * quantities[fruit.id];
-    });
-    setPieChartdata(data);
+    try {
+      const data: Record<string, number> = {};
+      selectedFruits.forEach((fruit) => {
+        data[fruit.name] = fruit.nutritions.calories * quantities[fruit.id];
+      });
+      setPieChartdata(data);
+    } catch (error) {
+      console.log("Error updating pie chart");
+    }
   }, [selectedFruits, quantities]);
 
   return (
@@ -28,8 +33,9 @@ const JarView: React.FC<JarViewProps> = ({ selectedFruits, quantities }) => {
         <Box flex={1} {...style.jar}>
           <HStack spacing={3} {...style.headingStack}>
             <Heading {...style.listHeading}>Name</Heading>
+            <Heading {...style.listHeading}>Cals/Unit</Heading>
             <Heading {...style.listHeading}>Qty</Heading>
-            <Heading {...style.listHeading}>Cal/Unit</Heading>
+            <Heading {...style.listHeading}>Cals</Heading>
           </HStack>
           {selectedFruits.length > 0 ? (
             selectedFruits.map((fruit) => {
@@ -37,8 +43,8 @@ const JarView: React.FC<JarViewProps> = ({ selectedFruits, quantities }) => {
                 <>
                   <HStack key={fruit.id} spacing={4} {...style.fruitList}>
                     <Box flex={1}>{fruit.name}</Box>
-                    <Box flex={1}>{quantities[fruit.id]}</Box>
                     <Box flex={1}>{fruit.nutritions.calories}</Box>
+                    <Box flex={1}>{quantities[fruit.id]}</Box>
                     <Box flex={1}>
                       {fruit.nutritions.calories * quantities[fruit.id]}
                     </Box>

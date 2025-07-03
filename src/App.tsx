@@ -51,22 +51,33 @@ function App() {
   };
 
   useEffect(() => {
-    fetch("https://fruity-proxy.vercel.app/api/fruits", {
-      headers: {
-        "x-api-key": "fruit-api-challenge-2025",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchAllFruits = async () => {
+      try {
+        const response = await fetch(
+          "https://fruity-proxy.vercel.app/api/fruits",
+          {
+            headers: {
+              "x-api-key": "fruit-api-challenge-2025",
+            },
+          }
+        );
+        const data = await response.json();
         setFruits(data);
+
+        const initialQuantity: Record<number, number> = {};
+
         data.forEach((fruit: Fruit) => {
-          setQuantities((prev) => ({
-            ...prev,
-            [fruit.id]: 0,
-          }));
+          initialQuantity[fruit.id] = 0;
         });
+
+        setQuantities(initialQuantity);
+      } catch (error: any) {
+        console.error("Fetch failed: ", error);
+      } finally {
         setIsLoading(false);
-      });
+      }
+    };
+    fetchAllFruits();
   }, []);
 
   useEffect(() => {
