@@ -15,7 +15,9 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      return res.status(response.status).json({ error: "API error" });
+      const errorText = await response.text();
+      console.error("Upstream API error:", errorText);
+      return res.status(response.status).json({ error: "API error", details: errorText });
     }
 
     const data = await response.json();
