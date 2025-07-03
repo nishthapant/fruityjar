@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import { style } from "./styles/App.styles";
 import FruitView from "./components/FruitView";
 import Controls from "./components/Controls";
 import {
@@ -9,6 +10,7 @@ import {
   Container,
   HStack,
   VStack,
+  Flex,
 } from "@chakra-ui/react";
 import type { Fruit } from "./components/types";
 import JarView from "./components/JarView";
@@ -71,30 +73,37 @@ function App() {
     const updatedSeletedFruits = fruits.filter((fruit: Fruit) => {
       return quantities[fruit.id] && quantities[fruit.id] > 0;
     });
-    console.log("selected fruits - ", selectedFruits);
     setSelectedFruits(updatedSeletedFruits);
   }, [quantities, fruits]);
 
   return (
-    <Container minW="container.xl" py={2} border="2px solid red">
-      <VStack spacing={2}>
-        <Heading>Fruit Jar</Heading>
-        <Controls onControlsChange={handleControlChange} />
-        <HStack spacing={2}>
-          {isloading && (
-            <Container flex={1} border="2px solid green">
-              <FruitView
-                fruits={fruits}
-                groupBy={controls.groupBy}
-                viewType={controls.viewType}
-                quantities={quantities}
-                onQuantityChange={handleQuantityChange}
-              />
-            </Container>
-          )}
-          <Container flex={1} bgColor="red.200" border="2px solid blue">
+    <Container {...style.outerContainer}>
+      <VStack spacing={2} minW="100%" minH="100%">
+        <Heading flex={1}>Fruit Jar</Heading>
+        <HStack flex={1} spacing={2} minW="100%" alignItems="stretch">
+          <VStack {...style.vstack}>
+            <Box display="flex" justifyContent="flex-end" w="100%" p={2}>
+              <HStack spacing={2}>
+                <Box flex={1}>Filters</Box>
+                <Box flex={1}>
+                  <Controls onControlsChange={handleControlChange} />
+                </Box>
+              </HStack>
+            </Box>
+            {isloading && (
+              <Container flex={1} p={0}>
+                <FruitView
+                  fruits={fruits}
+                  groupBy={controls.groupBy}
+                  viewType={controls.viewType}
+                  quantities={quantities}
+                  onQuantityChange={handleQuantityChange}
+                />
+              </Container>
+            )}
+          </VStack>
+          <Container {...style.jarContainer}>
             <JarView selectedFruits={selectedFruits} quantities={quantities} />
-            {/* Jar space */}
           </Container>
         </HStack>
       </VStack>

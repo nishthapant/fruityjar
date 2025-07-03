@@ -2,6 +2,8 @@ import type { GroupedFruitsProps } from "./types";
 import { Box, Heading, Text, HStack, VStack, Button } from "@chakra-ui/react";
 import { Collapsible } from "@ark-ui/react";
 import { useEffect, useState } from "react";
+import { style } from "../styles/TableView.styles";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 import {
   Table,
@@ -44,24 +46,29 @@ const TableView: React.FC<GroupedFruitsProps> = ({
         <Box>
           {Object.entries(groupedFruits).map(([group, fruits]) => {
             return (
-              <Box>
-                <VStack>
+              <Box mb={1}>
+                <VStack {...style.collapsibleGroup}>
                   <Collapsible.Root>
-                    <Collapsible.Trigger>
-                      <Heading>{group}</Heading>
+                    <Collapsible.Trigger asChild>
+                      <HStack>
+                        <ChevronDownIcon />
+                        <Heading {...style.collapsibleHeading}>{group}</Heading>
+                      </HStack>
                     </Collapsible.Trigger>
-                    <Button>Add All</Button>
+                    {/* <Button>Add All</Button> */}
                     <Collapsible.Content>
                       <TableContainer>
-                        <Table variant="striped" colorScheme="teal">
-                          <TableCaption>Fruits grouped by {group}</TableCaption>
+                        <Table variant="striped" colorScheme="gray">
+                          <TableCaption>
+                            Fruits grouped by {groupBy}
+                          </TableCaption>
                           <Thead>
                             <Tr>
-                              <Th>Family</Th>
-                              <Th>Order</Th>
-                              <Th>Genus</Th>
-                              <Th>Cals</Th>
-                              <Th>Add to Jar</Th>
+                              <Th {...style.tableHeading}>Family</Th>
+                              <Th {...style.tableHeading}>Order</Th>
+                              <Th {...style.tableHeading}>Genus</Th>
+                              <Th {...style.tableHeading}>Cals</Th>
+                              <Th {...style.tableHeading}>Add to Jar</Th>
                             </Tr>
                           </Thead>
                           <Tbody>
@@ -75,6 +82,7 @@ const TableView: React.FC<GroupedFruitsProps> = ({
                                   <Td flex={1}>
                                     {quantities[fruit.id] === 0 && (
                                       <Button
+                                        {...style.addButton}
                                         onClick={() => {
                                           handleQuantityIncrement(fruit.id);
                                         }}
@@ -85,6 +93,7 @@ const TableView: React.FC<GroupedFruitsProps> = ({
                                     {quantities[fruit.id] !== 0 && (
                                       <HStack>
                                         <Button
+                                          {...style.addButton}
                                           onClick={() =>
                                             handleQuantityDecrement(fruit.id)
                                           }
@@ -93,6 +102,7 @@ const TableView: React.FC<GroupedFruitsProps> = ({
                                         </Button>
                                         <Box>{quantities[fruit.id]}</Box>
                                         <Button
+                                          {...style.addButton}
                                           onClick={() =>
                                             handleQuantityIncrement(fruit.id)
                                           }
@@ -118,14 +128,14 @@ const TableView: React.FC<GroupedFruitsProps> = ({
       )}
       {!isGrouped && (
         <TableContainer>
-          <Table variant="striped" colorScheme="teal">
+          <Table variant="striped" colorScheme="gray">
             <Thead>
               <Tr>
-                <Th>Family</Th>
-                <Th>Order</Th>
-                <Th>Genus</Th>
-                <Th>Cals</Th>
-                <Th>Add to Jar</Th>
+                <Th {...style.tableHeading}>Family</Th>
+                <Th {...style.tableHeading}>Order</Th>
+                <Th {...style.tableHeading}>Genus</Th>
+                <Th {...style.tableHeading}>Cals</Th>
+                <Th {...style.tableHeading}>Add to Jar</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -139,6 +149,7 @@ const TableView: React.FC<GroupedFruitsProps> = ({
                     <Td flex={1}>
                       {quantities[fruit.id] === 0 && (
                         <Button
+                          {...style.addButton}
                           onClick={() => {
                             handleQuantityIncrement(fruit.id);
                           }}
@@ -149,12 +160,14 @@ const TableView: React.FC<GroupedFruitsProps> = ({
                       {quantities[fruit.id] !== 0 && (
                         <HStack>
                           <Button
+                            {...style.addButton}
                             onClick={() => handleQuantityDecrement(fruit.id)}
                           >
                             -
                           </Button>
                           <Box>{quantities[fruit.id]}</Box>
                           <Button
+                            {...style.addButton}
                             onClick={() => handleQuantityIncrement(fruit.id)}
                           >
                             +

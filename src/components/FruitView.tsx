@@ -1,16 +1,10 @@
 import { useState, useEffect } from "react";
 
-import {
-  Box,
-  Heading,
-  Text,
-  Container,
-  HStack,
-  Collapse,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import ListView from "./ListView";
 import TableView from "./TableView";
 import type { GroupBySelection, FruitViewProps, Fruit } from "./types";
+import { style } from "../styles/FruitView.styles";
 
 const FruitView: React.FC<FruitViewProps> = ({
   fruits,
@@ -44,7 +38,7 @@ const FruitView: React.FC<FruitViewProps> = ({
   }, [fruits, groupBy]);
 
   return (
-    <Container>
+    <Box {...style.outerContainer}>
       {viewType == "List" && (
         <ListView
           groupedFruits={groupedFruits}
@@ -61,7 +55,7 @@ const FruitView: React.FC<FruitViewProps> = ({
           onQuantityChange={onQuantityChange}
         />
       )}
-    </Container>
+    </Box>
   );
 };
 

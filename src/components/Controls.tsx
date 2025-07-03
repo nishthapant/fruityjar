@@ -37,7 +37,7 @@ const Controls: React.FC<ControlProps> = ({ onControlsChange }) => {
       <Box flex={1}>
         <Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-            Group By: {groupBy}
+            <Text fontSize="sm">Group By: {groupBy}</Text>
           </MenuButton>
           <MenuList>
             <MenuOptionGroup
@@ -56,7 +56,7 @@ const Controls: React.FC<ControlProps> = ({ onControlsChange }) => {
       <Box flex={1}>
         <Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-            View Type: {viewType}
+            <Text fontSize="sm">View Type: {viewType}</Text>
           </MenuButton>
           <MenuList>
             <MenuOptionGroup

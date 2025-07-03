@@ -1,7 +1,17 @@
 import type { GroupedFruitsProps } from "./types";
-import { Box, Heading, Text, HStack, VStack, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  HStack,
+  VStack,
+  Button,
+  Container,
+} from "@chakra-ui/react";
 import { Collapsible } from "@ark-ui/react";
 import { useEffect, useState } from "react";
+import { style } from "../styles/ListView.styles";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 const ListView: React.FC<GroupedFruitsProps> = ({
   groupedFruits,
@@ -33,51 +43,61 @@ const ListView: React.FC<GroupedFruitsProps> = ({
         <Box>
           {Object.entries(groupedFruits).map(([group, fruits]) => {
             return (
-              <Box>
-                <VStack>
+              <Box p={1}>
+                <VStack {...style.collapsibleGroup}>
                   <Collapsible.Root>
-                    <Collapsible.Trigger>
-                      <Heading>{group}</Heading>
+                    <Collapsible.Trigger asChild>
+                      <HStack>
+                        <ChevronDownIcon />
+                        <Heading {...style.collapsibleHeading}>{group}</Heading>
+                      </HStack>
                     </Collapsible.Trigger>
                     <Collapsible.Content>
-                      <HStack spacing={3}>
-                        <Text flex={1}>Name</Text>
-                        <Text flex={1}>Calories</Text>
-                        <Box flex={1}>Add to Jar</Box>
+                      <HStack spacing={3} {...style.headingStack}>
+                        <Heading {...style.listHeading}>Name</Heading>
+                        <Heading {...style.listHeading}>Calories</Heading>
+                        <Heading {...style.listHeading} textAlign="left">
+                          Add to Jar
+                        </Heading>
                       </HStack>
                       {fruits.map((fruit) => {
                         return (
-                          <HStack spacing={3}>
+                          <HStack {...style.fruitList}>
                             <Box flex={1}>{fruit.name}</Box>
                             <Box flex={1}>{fruit.nutritions.calories}</Box>
-                            {quantities[fruit.id] === 0 && (
-                              <Button
-                                onClick={() => {
-                                  handleQuantityIncrement(fruit.id);
-                                }}
-                              >
-                                Add
-                              </Button>
-                            )}
-                            {quantities[fruit.id] !== 0 && (
-                              <HStack>
+                            <Box flex={1} textAlign="left" paddingLeft="8">
+                              {quantities[fruit.id] === 0 && (
                                 <Button
-                                  onClick={() =>
-                                    handleQuantityDecrement(fruit.id)
-                                  }
+                                  {...style.addButton}
+                                  onClick={() => {
+                                    handleQuantityIncrement(fruit.id);
+                                  }}
                                 >
-                                  -
+                                  Add
                                 </Button>
-                                <Box>{quantities[fruit.id]}</Box>
-                                <Button
-                                  onClick={() =>
-                                    handleQuantityIncrement(fruit.id)
-                                  }
-                                >
-                                  +
-                                </Button>
-                              </HStack>
-                            )}
+                              )}
+                              {quantities[fruit.id] !== 0 && (
+                                <HStack>
+                                  <Button
+                                    {...style.addButton}
+                                    onClick={() =>
+                                      handleQuantityDecrement(fruit.id)
+                                    }
+                                  >
+                                    -
+                                  </Button>
+                                  <Box>{quantities[fruit.id]}</Box>
+                                  <Button
+                                    {...style.addButton}
+                                    onClick={() =>
+                                      handleQuantityIncrement(fruit.id)
+                                    }
+                                  >
+                                    +
+                                  </Button>
+                                </HStack>
+                              )}
+                            </Box>
                           </HStack>
                         );
                       })}
@@ -90,39 +110,56 @@ const ListView: React.FC<GroupedFruitsProps> = ({
         </Box>
       )}
       {!isGrouped && (
-        <Box>
-          <VStack>
-            <HStack spacing={3}>
-              <Text flex={1}>Name</Text>
-              <Text flex={1}>Calories</Text>
-              <Box flex={1}>Add to Jar</Box>
+        <Container minW="full" p={0}>
+          <VStack minW="100%">
+            <HStack spacing={3} {...style.headingStack}>
+              <Heading {...style.listHeading}>Name</Heading>
+              <Heading {...style.listHeading}>Calories</Heading>
+              <Heading {...style.listHeading} textAlign="left">
+                Add to Jar
+              </Heading>
             </HStack>
-            {groupedFruits["none"].map((fruit) => {
-              return (
-                <HStack spacing={3}>
-                  <Box flex={1}>{fruit.name}</Box>
-                  <Box flex={1}>{fruit.nutritions.calories}</Box>
-                  {quantities[fruit.id] === 0 && (
-                    <Button onClick={() => handleQuantityIncrement(fruit.id)}>
-                      Add
-                    </Button>
-                  )}
-                  {quantities[fruit.id] !== 0 && (
-                    <HStack>
-                      <Button onClick={() => handleQuantityDecrement(fruit.id)}>
-                        -
-                      </Button>
-                      <Box>{quantities[fruit.id]}</Box>
-                      <Button onClick={() => handleQuantityIncrement(fruit.id)}>
-                        +
-                      </Button>
-                    </HStack>
-                  )}
-                </HStack>
-              );
-            })}
+            <Box minW="full">
+              {groupedFruits["none"].map((fruit) => {
+                return (
+                  <HStack spacing={3} {...style.fruitList}>
+                    <Box flex={1} p={2}>
+                      {fruit.name}
+                    </Box>
+                    <Box flex={1}>{fruit.nutritions.calories}</Box>
+                    <Box flex={1} textAlign="left" paddingLeft="8">
+                      {quantities[fruit.id] === 0 && (
+                        <Button
+                          onClick={() => handleQuantityIncrement(fruit.id)}
+                          {...style.addButton}
+                        >
+                          Add
+                        </Button>
+                      )}
+                      {quantities[fruit.id] !== 0 && (
+                        <HStack>
+                          <Button
+                            {...style.addButton}
+                            onClick={() => handleQuantityDecrement(fruit.id)}
+                          >
+                            -
+                          </Button>
+                          <Box>{quantities[fruit.id]}</Box>
+                          <Button
+                            {...style.addButton}
+                            onClick={() => handleQuantityIncrement(fruit.id)}
+                          >
+                            +
+                          </Button>
+                        </HStack>
+                      )}
+                    </Box>
+                  </HStack>
+                );
+              })}
+            </Box>
           </VStack>
-        </Box>
+        </Container>
       )}
     </>
   );

@@ -1,19 +1,20 @@
-import { Box, VStack, HStack, Button } from "@chakra-ui/react";
+import { Box, VStack, HStack, Text, Heading } from "@chakra-ui/react";
 import JarPieChart from "./JarPieChart";
 import type { JarViewProps } from "./types";
 import { useEffect, useState } from "react";
+import { style } from "../styles/JarView.styles";
 
 const JarView: React.FC<JarViewProps> = ({ selectedFruits, quantities }) => {
   const [pieChartData, setPieChartdata] = useState<Record<string, number>>({});
-  const [viewPieChart, setViewPieChart] = useState(false);
+  // const [viewPieChart, setViewPieChart] = useState(false);
 
   const totalCalories = selectedFruits.reduce((sum, fruit) => {
     return sum + fruit.nutritions.calories * quantities[fruit.id];
   }, 0);
 
-  const handlePieChartView = () => {
-    setViewPieChart(!viewPieChart);
-  };
+  // const handlePieChartView = () => {
+  //   setViewPieChart(!viewPieChart);
+  // };
 
   useEffect(() => {
     let data: Record<string, number> = {};
@@ -24,14 +25,19 @@ const JarView: React.FC<JarViewProps> = ({ selectedFruits, quantities }) => {
   }, [selectedFruits, quantities]);
 
   return (
-    <>
-      <VStack spacing={2}>
-        <Box flex={1}>
-          {selectedFruits.length > 0 &&
+    <Box {...style.outerContainer} h="100%">
+      <VStack spacing={3} alignItems="stretch" h="100%">
+        <Box flex={1} {...style.jar}>
+          <HStack spacing={3} {...style.headingStack}>
+            <Heading {...style.listHeading}>Name</Heading>
+            <Heading {...style.listHeading}>Qty</Heading>
+            <Heading {...style.listHeading}>Cal/Unit</Heading>
+          </HStack>
+          {selectedFruits.length > 0 ? (
             selectedFruits.map((fruit) => {
               return (
                 <>
-                  <HStack key={fruit.id} spacing={4}>
+                  <HStack key={fruit.id} spacing={4} {...style.fruitList}>
                     <Box flex={1}>{fruit.name}</Box>
                     <Box flex={1}>{quantities[fruit.id]}</Box>
                     <Box flex={1}>{fruit.nutritions.calories}</Box>
@@ -41,20 +47,23 @@ const JarView: React.FC<JarViewProps> = ({ selectedFruits, quantities }) => {
                   </HStack>
                 </>
               );
-            })}
-          {selectedFruits.length == 0 && <Box>Jar is Empty</Box>}
+            })
+          ) : (
+            <Box>Jar is Empty</Box>
+          )}
         </Box>
-        <Box>Total calories: {totalCalories}</Box>
-        <Button onClick={handlePieChartView}>
-          {viewPieChart == false ? "View pie chart" : "Close"}
-        </Button>
-        <Box flex={1}>
-          {Object.keys(pieChartData).length > 0 && viewPieChart && (
+        <Box flex={0.2} display="flex" alignItems="center" mb={1}>
+          <Heading {...style.total}>Total calories: {totalCalories}</Heading>
+        </Box>
+        <Box flex={1} {...style.chart}>
+          {Object.keys(pieChartData).length > 0 ? (
             <JarPieChart data={pieChartData} />
+          ) : (
+            <Text>Add fruits to view chart</Text>
           )}
         </Box>
       </VStack>
-    </>
+    </Box>
   );
 };
 
