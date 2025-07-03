@@ -50,6 +50,7 @@ function App() {
   };
 
   useEffect(() => {
+    console.log("IN THE APP");
     const fetchAllFruits = async () => {
       try {
         const response = await fetch("/api/fruity");
@@ -83,10 +84,11 @@ function App() {
 
   return (
     <Container {...style.outerContainer}>
+      <Heading>HELLLOOOO WORLDDDDDD</Heading>
       <VStack spacing={2} minW="100%" minH="100%">
         <HStack spacing={2}>
           <Heading color="#19456B" flex={1}>
-            Fruity Jar - Project
+            Fruity Jar
           </Heading>
           <Apple size="24" />
         </HStack>
