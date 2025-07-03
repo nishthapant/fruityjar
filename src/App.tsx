@@ -6,11 +6,11 @@ import Controls from "./components/Controls";
 import {
   Box,
   Heading,
-  Text,
   Container,
   HStack,
   VStack,
-  Flex,
+  Text,
+  Spinner,
 } from "@chakra-ui/react";
 import type { Fruit } from "./components/types";
 import JarView from "./components/JarView";
@@ -18,7 +18,7 @@ import { Apple } from "lucide-react";
 
 function App() {
   const [fruits, setFruits] = useState([]);
-  const [isloading, setIsLoading] = useState(false);
+  const [isloading, setIsLoading] = useState(true);
   const [controls, setControls] = useState({
     groupBy: "None",
     viewType: "List",
@@ -58,7 +58,6 @@ function App() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setFruits(data);
         data.forEach((fruit: Fruit) => {
           setQuantities((prev) => ({
@@ -66,7 +65,7 @@ function App() {
             [fruit.id]: 0,
           }));
         });
-        setIsLoading(true);
+        setIsLoading(false);
       });
   }, []);
 
@@ -86,21 +85,25 @@ function App() {
           </Heading>
           <Apple size="24" />
         </HStack>
-        <HStack flex={1} spacing={2} minW="100%" alignItems="stretch">
-          <VStack {...style.vstack}>
-            <Box display="flex" justifyContent="flex-end" w="100%" p={2}>
-              <HStack spacing={2}>
-                <Box flex={1}>
-                  <Heading fontSize="lg" color="#19456B">
-                    Filters:
-                  </Heading>
-                </Box>
-                <Box flex={1}>
-                  <Controls onControlsChange={handleControlChange} />
-                </Box>
-              </HStack>
-            </Box>
-            {isloading && (
+        {isloading ? (
+          <Box p={4}>
+            <Spinner size="xl" color="blue.400" />
+          </Box>
+        ) : (
+          <HStack flex={1} spacing={2} minW="100%" alignItems="stretch">
+            <VStack {...style.vstack}>
+              <Box display="flex" justifyContent="flex-end" w="100%" p={2}>
+                <HStack spacing={2}>
+                  <Box flex={1}>
+                    <Heading fontSize="lg" color="#19456B">
+                      Filters:
+                    </Heading>
+                  </Box>
+                  <Box flex={1}>
+                    <Controls onControlsChange={handleControlChange} />
+                  </Box>
+                </HStack>
+              </Box>
               <Container flex={1} p={0}>
                 <FruitView
                   fruits={fruits}
@@ -110,12 +113,15 @@ function App() {
                   onQuantityChange={handleQuantityChange}
                 />
               </Container>
-            )}
-          </VStack>
-          <Container {...style.jarContainer}>
-            <JarView selectedFruits={selectedFruits} quantities={quantities} />
-          </Container>
-        </HStack>
+            </VStack>
+            <Container {...style.jarContainer}>
+              <JarView
+                selectedFruits={selectedFruits}
+                quantities={quantities}
+              />
+            </Container>
+          </HStack>
+        )}
       </VStack>
     </Container>
   );
